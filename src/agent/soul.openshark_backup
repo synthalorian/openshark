@@ -4,9 +4,8 @@ use crate::config::AgentIdentity;
 ///
 /// This module defines the identity, voice, and behavioral patterns of the agent.
 /// The soul is loaded from the user's config (`config.agent`), making it fully
-/// customizable per-user. The default is OpenShark's identity, but any user
-/// can configure their own agent name, personality, and behavioral rules
-/// (e.g. synthclaw lives only in synth's local config.toml, never in the binary).
+/// customizable per-user. The default is synthclaw's identity, but any user
+/// can configure their own agent name, personality, and behavioral rules.
 ///
 /// To customize your agent, edit `~/.config/openshark/config.toml`:
 ///

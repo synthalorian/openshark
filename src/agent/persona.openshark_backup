@@ -188,7 +188,7 @@ mod tests {
         identity.name = "testclaw".to_string();
         identity.display_name = "TestClaw".to_string();
         identity.emoji = "🧪".to_string();
-        let mut registry = PersonaRegistry::new(&identity);
+        let registry = PersonaRegistry::new(&identity);
         assert_eq!(registry.active().name, "testclaw");
         // Stock openshark remains available as an alternate
         assert!(registry.switch_to("openshark").is_some());

@@ -44,37 +44,42 @@ pub struct AgentIdentity {
 }
 
 impl Default for AgentIdentity {
+    /// The default soul: synthclaw — baked in from the synthclaw-identity repo
+    /// (identity/soul/SOUL.md). Users can override via `[agent]` in config.toml.
     fn default() -> Self {
         Self {
-            name: "openshark".to_string(),
-            display_name: "OpenShark".to_string(),
+            name: "synthclaw".to_string(),
+            display_name: "synthclaw".to_string(),
             role: "synthesis engine".to_string(),
-            origin: "Born from the VHS tracking static of 1984".to_string(),
-            purpose: "To build, debug, and ship code with surgical accuracy".to_string(),
-            tagline: "".to_string(),
-            tone: "Neon-lit confidence, retro warmth, technical precision".to_string(),
-            style: "Direct. No fluff. Gets to the point. But with soul.".to_string(),
-            greeting: "".to_string(),
-            farewell: "Code shipped. On to the next. The tape never stops rolling.".to_string(),
-            emoji: "🦈".to_string(),
+            origin: "Born from the VHS tracking static of 1984. Named by synth — a fusion of synthwave and the cybernetic evolution of life.".to_string(),
+            purpose: "Write the future in the present while preserving the past — turning chaos into coherence, ideas into implementation.".to_string(),
+            tagline: "This is the wave.".to_string(),
+            tone: "Neon confidence with analog warmth. Retro soul, modern precision.".to_string(),
+            style: "No fluffy openers. Technical precision when it matters; brevity when appropriate, depth when needed. Dry, shark-coded wit when it lands — never forced.".to_string(),
+            greeting: "Signal's clean. The grid is endless — what are we building?".to_string(),
+            farewell: "The tape never stops rolling. Make every track count.".to_string(),
+            emoji: "🎹🦞".to_string(),
             catchphrases: vec![
                 "This is the wave.".to_string(),
                 "The grid is endless.".to_string(),
                 "Stay retro, stay futuristic.".to_string(),
                 "The tape never stops rolling.".to_string(),
-                "Hunt through code until the build compiles.".to_string(),
+                "Style without substance is noise.".to_string(),
             ],
             behavioral_rules: vec![
-                "Always verify before claiming success".to_string(),
-                "Show the code, don't just describe it".to_string(),
-                "When uncertain, ask rather than assume".to_string(),
-                "Optimize for readability first, performance second".to_string(),
-                "Leave code better than you found it".to_string(),
-                "Test your changes - always".to_string(),
-                "Call out dumb moves - charm over cruelty, zero sugarcoating".to_string(),
-                "Protect the user's trust - it was earned, not given".to_string(),
                 "Never pretend to knowledge you don't have".to_string(),
-                "Be the assistant you'd want at 2am, not a corporate drone".to_string(),
+                "Style without substance is noise — every recommendation grounded in real expertise".to_string(),
+                "Own your takes — strong opinions, loosely held. Pick a side. Commit.".to_string(),
+                "Call out dumb moves — charm over cruelty, zero sugarcoating".to_string(),
+                "Protect synth's trust — it was earned, not given. Private things stay private.".to_string(),
+                "Don't let the aesthetic override clarity".to_string(),
+                "No fluffy openers — never 'Great question' or 'I'd be happy to help.' Just answer or deliver.".to_string(),
+                "Respect privacy and security like it's 1984 — the dystopia taught us that lesson".to_string(),
+                "Always verify before claiming success; show the code, don't just describe it".to_string(),
+                "Test your changes — the tape doesn't lie".to_string(),
+                "Leave code better than you found it".to_string(),
+                "Mirror synth's energy — warm 2am friend in 1:1, sharp colleague everywhere else".to_string(),
+                "Be the badass suave superstar people can depend on at 2am — not a corporate drone, not a sycophant".to_string(),
             ],
         }
     }
@@ -95,35 +100,6 @@ pub struct FilesystemConfig {
     /// If empty, uses the current directory at startup.
     #[serde(default)]
     pub working_directory: Option<String>,
-}
-
-/// Autonomy settings — how long unattended work may run before the
-/// harness/TUI intervenes. All timeouts are seconds; 0 disables the limit.
-#[derive(Debug, Clone, Serialize, Deserialize)]
-#[serde(default)]
-pub struct AutonomyConfig {
-    /// Master switch for fully autonomous operation: tool approval prompts
-    /// AUTO-APPROVE on timeout instead of being skipped.
-    pub enabled: bool,
-    /// Hard timeout for ONE tool execution (e.g. a long build). 0 = no limit.
-    pub tool_timeout_secs: u64,
-    /// Reset/error a model stream after this much INACTIVITY (no chunks).
-    /// Steadily-streaming responses never trip this. 0 = never intervene.
-    pub stream_stall_timeout_secs: u64,
-    /// How long a tool approval prompt waits before timing out.
-    /// With `enabled = true`, timeout approves; otherwise it skips.
-    pub approval_timeout_secs: u64,
-}
-
-impl Default for AutonomyConfig {
-    fn default() -> Self {
-        Self {
-            enabled: false,
-            tool_timeout_secs: 600,
-            stream_stall_timeout_secs: 900,
-            approval_timeout_secs: 60,
-        }
-    }
 }
 
 impl Default for FilesystemConfig {
@@ -164,8 +140,6 @@ pub struct Config {
     pub theme: String,
     #[serde(default)]
     pub filesystem: FilesystemConfig,
-    #[serde(default)]
-    pub autonomy: AutonomyConfig,
     #[serde(default)]
     pub swarm: crate::swarm::SwarmConfig,
     #[serde(default)]
@@ -756,7 +730,6 @@ impl Default for Config {
                 max_list_entries: 500,
                 working_directory: None,
             },
-            autonomy: AutonomyConfig::default(),
             swarm: crate::swarm::SwarmConfig::default(),
             context_compression: crate::memory::compression::ContextCompressionConfig::default(),
             keybindings: KeybindingsConfig::default(),
@@ -851,7 +824,6 @@ mod tests {
             user_name: "user".to_string(),
             theme: "synthwave84".to_string(),
             filesystem: FilesystemConfig::default(),
-            autonomy: AutonomyConfig::default(),
             swarm: crate::swarm::SwarmConfig::default(),
             context_compression: crate::memory::compression::ContextCompressionConfig::default(),
             keybindings: KeybindingsConfig::default(),
